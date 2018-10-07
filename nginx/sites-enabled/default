@@ -1,0 +1,19 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+
+    index index.html index.htm;
+
+    server_name _;
+
+    include git-http/git-http-static.conf;
+    include git-http/git-http-backend.conf;
+
+    location / {
+        include git-http/gitweb.conf;
+        try_files $uri $uri/ =404;
+    }
+}
+

@@ -1,0 +1,8 @@
+version: '3.2'
+services:
+  gitserver:
+    build: ../
+    volumes:
+      - './myrepo:/var/lib/git/myrepo:ro'
+    ports:
+      - '8080:80'
