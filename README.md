@@ -10,6 +10,16 @@ docker run \
     kostyaesmukov/gitweb-readonly
 ```
 
+Or with a custom base url:
+
+```sh
+docker run \
+    -p 8080:80 \
+    -e GITWEB_BASE_PATH=/gitweb \
+    -v /path/to/my/git_repos:/var/lib/git:ro \
+    kostyaesmukov/gitweb-readonly
+```
+
 ## Clone
 
 ```sh

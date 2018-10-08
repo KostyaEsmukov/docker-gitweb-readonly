@@ -2,18 +2,20 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
-    root /var/www/html;
+    root /dev/null;
 
     index index.html index.htm;
 
     server_name _;
 
+    # Rewrite for non-bare repos: myrepo.git -> myrepo/.git
+    rewrite ^$GITWEB_BASE_PATH/([^/]*)\.git(.*)$ /$1/.git$2;
+
     include git-http/git-http-static.conf;
     include git-http/git-http-backend.conf;
 
-    location / {
+    location $GITWEB_BASE_PATH/ {
         include git-http/gitweb.conf;
-        try_files $uri $uri/ =404;
     }
 }
 

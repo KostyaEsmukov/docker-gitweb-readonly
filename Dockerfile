@@ -5,7 +5,7 @@ ENV \
 
 RUN \
   apt-get update && \
-  apt-get install -y fcgiwrap git gitweb nginx && \
+  apt-get install -y gettext-base fcgiwrap git gitweb nginx && \
   rm -rf /var/lib/apt/lists/* && \
   echo "\ndaemon off;" >> /etc/nginx/nginx.conf && \
   chown -R www-data:www-data /var/lib/nginx && \
@@ -21,6 +21,7 @@ VOLUME ["/etc/gitweb", "/etc/nginx/sites-enabled", "/var/lib/git", \
 
 CMD \
   echo "FCGI_GROUP=${GIT_GROUP}" > /etc/default/fcgiwrap && \
+  envsubst '$GITWEB_BASE_PATH' < /etc/nginx/default.tmpl > /etc/nginx/sites-enabled/default && \
   service fcgiwrap start && \
   exec nginx
 

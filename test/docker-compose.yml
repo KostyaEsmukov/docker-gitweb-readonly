@@ -4,5 +4,7 @@ services:
     build: ../
     volumes:
       - './myrepo:/var/lib/git/myrepo:ro'
+    environment:
+      GITWEB_BASE_PATH: "${GITWEB_BASE_PATH}"
     ports:
       - '8080:80'

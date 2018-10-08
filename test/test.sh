@@ -5,11 +5,13 @@ set -o xtrace
 
 main() {
     cleanup
+    export GITWEB_BASE_PATH="$1"
     create_repo
     init_docker_container
 
     sleep 3
 
+    assert_http_200
     assert_can_clone
     assert_cannot_push
 }
@@ -28,9 +30,16 @@ init_docker_container() {
     docker-compose up -d --build
 }
 
+assert_http_200() {
+    echo "assert_http_200..."
+    curl --fail --silent --show-error --output /dev/null \
+        http://localhost:8080"${GITWEB_BASE_PATH}"/ || exit 1
+    echo "OK!"
+}
+
 assert_can_clone() {
     echo "assert_can_clone..."
-    git clone http://localhost:8080/myrepo.git myrepo.clone
+    git clone http://localhost:8080"${GITWEB_BASE_PATH}"/myrepo.git myrepo.clone
     [[ -f "myrepo.clone/file.txt" ]] || exit 1
     echo "OK!"
 }
@@ -56,3 +65,4 @@ if [ ! -r "docker-compose.yml" ]; then
 fi
 trap cleanup EXIT
 main
+main "/my/prefix"
