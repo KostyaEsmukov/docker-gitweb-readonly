@@ -5,6 +5,7 @@ ENV \
 
 RUN \
   apt-get update && \
+  apt-get upgrade -y && \
   apt-get install -y gettext-base fcgiwrap git gitweb nginx && \
   rm -rf /var/lib/apt/lists/* && \
   echo "\ndaemon off;" >> /etc/nginx/nginx.conf && \
@@ -12,7 +13,15 @@ RUN \
   mkdir -p /etc/gitweb/ && \
   cp /etc/gitweb.conf /etc/gitweb/ && \
   ln -sf /dev/stdout /var/log/nginx/access.log && \
-  ln -sf /dev/stderr /var/log/nginx/error.log
+  ln -sf /dev/stderr /var/log/nginx/error.log && \
+  apt-get clean && \
+  rm -rf \
+      /var/lib/apt/lists/* \
+      /tmp/* \
+      /var/tmp/* \
+      /usr/share/man \
+      /usr/share/doc \
+      /usr/share/doc-base
 
 COPY nginx /etc/nginx/
 
