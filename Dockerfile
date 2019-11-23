@@ -1,4 +1,4 @@
-FROM debian:9
+FROM debian:buster-slim
 
 ENV \
   GIT_GROUP="${GIT_GROUP:-www-data}"
